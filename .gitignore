@@ -3,3 +3,4 @@
 .pydevproject
 settings.py
 nbproject
+*.pyc
