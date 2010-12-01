@@ -1,0 +1,14 @@
+We're making an web based evaluation form system for a school project.
+
+You have to make your own settings.py file.
+
+Include in INSTALLED_APPS:
+  - django.contrib.auth
+  - django.contrib.contenttypes
+  - django.contrib.sessions
+  - django.contrib.sites
+  - evaluate
+
+Include in MIDDLEWARE_CLASSES
+  - django.contrib.sessions.middleware.SessionMiddleware
+  - django.contrib.auth.middleware.AuthenticationMiddleware
