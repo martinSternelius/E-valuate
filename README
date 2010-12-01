@@ -12,3 +12,4 @@ Include in INSTALLED_APPS:
 Include in MIDDLEWARE_CLASSES
   - django.contrib.sessions.middleware.SessionMiddleware
   - django.contrib.auth.middleware.AuthenticationMiddleware
+  - evaluate.middleware.UrlAccessRestrictions

@@ -5,12 +5,9 @@ from django.contrib import auth
 from evaluate.models import *
 
 def index(request):
-  if request.user.is_authenticated():
-    t = loader.get_template('index.html')
-    c = RequestContext(request)
-    return HttpResponse(t.render(c))
-  else:
-    return HttpResponseRedirect('/login')
+  t = loader.get_template('index.html')
+  c = RequestContext(request)
+  return HttpResponse(t.render(c))
 
 def logout(request):
   auth.logout(request)
