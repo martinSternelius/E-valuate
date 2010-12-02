@@ -14,4 +14,6 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     (r'^index/$', evaluateindex),
     
+    (r'^evaluation/', include('evaluate.urls')),
+    
 )
