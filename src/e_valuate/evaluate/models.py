@@ -6,6 +6,9 @@ class Evaluation(models.Model):
     created     = models.DateTimeField(auto_now_add = True)
     modified    = models.DateTimeField(auto_now = True)
 
+    def getAllTemplates(self):
+        return Evaluation.objects.filter(isTemplate=True)
+
 class QuestionType(models.Model):
     name            = models.CharField(max_length=128)
     answerDatatype  = models.CharField(max_length=16, choices = (('integer', 'integer'), ('string', 'string'),))
