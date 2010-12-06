@@ -2,6 +2,7 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
+from django.conf import settings
 
 from e_valuate import evaluate
 from e_valuate.evaluate.views import index as evaluateindex
@@ -17,3 +18,9 @@ urlpatterns = patterns('',
     (r'^evaluation/', include('evaluate.urls')),
     
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    )
+

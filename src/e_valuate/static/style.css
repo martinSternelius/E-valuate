@@ -1,0 +1,27 @@
+h1
+{
+	text-align:center;
+}
+
+#create_name
+{
+	text-align:center;
+}
+
+#textfield label
+{
+	display:block;
+	clear:right;
+}
+
+#save
+{
+	margin-left:150px;
+	clear:right;
+}
+
+#option
+{
+	margin-bottom:30px;
+	
+}

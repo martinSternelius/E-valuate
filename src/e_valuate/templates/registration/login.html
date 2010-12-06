@@ -14,7 +14,7 @@
        Please try again.</p>
   {% endif %}
 
-  <form method="post" action=".">
+  <form method="post" action=".">{% csrf_token %}
     <p><label for="id_username">Username:</label>
       {{ form.username }}</p>
     <p><label for="id_password">Password:</label>

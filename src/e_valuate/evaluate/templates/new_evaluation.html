@@ -1,0 +1,28 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Ny utvärdering{% endblock %}
+
+{% block head %}Ny utvärdering{% endblock %} id
+
+{% block content %}
+<section id="create_name">
+  <h2>Skapa utvärdering - Namn och Kategori</h2>
+</section>
+<div id="save">
+  <form action="" method="post">{% csrf_token %}
+<div id="textfield" style="margin-bottom: 40px;">  
+    {{evaluationForm.as_p}}
+</div> 
+  
+<div id="option">
+    <select id="headerOption" name="templateId">
+      <option value="false" selected='selected'>Ingen mall</option>
+      {% for template in templates %}
+      <option value="{{template.id}}">{{template.name}}</option>
+      {% endfor %}
+    </select>
+</div>
+    <input type="submit" size="20px" value="Spara och fortsätt" id="spara"/>
+  </form>
+</div>
+{% endblock %}
