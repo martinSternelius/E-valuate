@@ -6,5 +6,8 @@
 	Frågor för utvärderingen {{ evaluation.name }}
 {% endblock %}
 {% block content %}
-	{{ questionForm }}
+	<form action="#" method="post">
+		{{ questionForm }}
+		<input type="submit" value="Ok" />
+	</form>
 {% endblock %}
