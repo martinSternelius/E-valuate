@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}
+	Frågor för utvärderingen {{ evaluation.name }}
+{% endblock %}
+{% block head %}
+	Frågor för utvärderingen {{ evaluation.name }}
+{% endblock %}
+{% block content %}
+	<form action="#" method="post">
+		{{ questionForm }}
+		<input type="submit" value="Ok" />
+	</form>
+{% endblock %}

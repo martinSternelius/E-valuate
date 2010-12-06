@@ -1,5 +1,6 @@
-﻿from django.db import models
+from django.db import models
 from django.forms import ModelForm
+from django.forms.models import modelformset_factory
 
 class Evaluation(models.Model):
   name        = models.CharField(max_length=128, verbose_name="Utvärderingens Namn")
@@ -21,11 +22,12 @@ class QuestionType(models.Model):
 	return self.name
   
 class Question(models.Model):
-  question              = models.CharField(max_length=128)
-  questionType          = models.ForeignKey(QuestionType)
+  question              = models.CharField('fråga', max_length=128)
+  order                 = models.IntegerField()
+  questionType          = models.ForeignKey(QuestionType, verbose_name = 'Svarstyp')
   evaluation            = models.ForeignKey(Evaluation)
-  hasExtraTextField     = models.BooleanField(blank=True)
-  extraTextFieldHeading = models.CharField(max_length = 128, blank=True)
+  hasExtraTextField     = models.BooleanField('Extra fritextfält', blank=True)
+  extraTextFieldHeading   = models.CharField('Rubrik till extrafält', max_length = 128, blank=True)
   
   def __unicode__(self):
     return self.question
@@ -64,3 +66,8 @@ class EvaluationForm(ModelForm):
   class Meta:
     exclude = ('isTemplate', 'created', 'modified')
     model = Evaluation
+
+class QuestionForm(ModelForm):
+    class Meta:
+        model = Question
+        fields = ('question', 'hasExtraTextField', 'extraTextFieldHeading', 'questionType')
