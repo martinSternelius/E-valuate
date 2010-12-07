@@ -1,7 +1,6 @@
 # coding: utf-8
 from django.db import models
 from django.forms import ModelForm
-from django.forms.models import modelformset_factory
 
 class Evaluation(models.Model):
   name        = models.CharField(max_length=128, verbose_name="Utvärderingens Namn")
@@ -10,8 +9,8 @@ class Evaluation(models.Model):
   modified    = models.DateTimeField(auto_now = True)
   
   def __unicode__(self):
-	return self.name
-	
+    return self.name
+
   def getAllTemplates(self):
     return Evaluation.objects.filter(isTemplate=True)
 
@@ -20,7 +19,7 @@ class QuestionType(models.Model):
   answerDatatype  = models.CharField(max_length=16, choices = (('integer', 'integer'), ('string', 'string'),))
   
   def __unicode__(self):
-	return self.name
+    return self.name
   
 class Question(models.Model):
   question              = models.CharField('fråga', max_length=128)
@@ -52,7 +51,7 @@ class Answer(models.Model):
 class StringAlternative(models.Model):
   value = models.CharField(max_length=128)
   question = models.ForeignKey(Question)
-  
+      
   def __unicode__(self):
     return self.value
   
@@ -69,6 +68,6 @@ class EvaluationForm(ModelForm):
     model = Evaluation
 
 class QuestionForm(ModelForm):
-    class Meta:
-        model = Question
-        fields = ('question', 'hasExtraTextField', 'extraTextFieldHeading', 'questionType')
+  class Meta:
+    model = Question
+    fields = ('question', 'hasExtraTextField', 'extraTextFieldHeading', 'questionType')
