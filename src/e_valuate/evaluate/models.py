@@ -1,4 +1,6 @@
-# coding: utf-8
+
+# coding:utf-8
+
 from django.db import models
 from django.forms import ModelForm
 
@@ -9,10 +11,10 @@ class Evaluation(models.Model):
   modified    = models.DateTimeField(auto_now = True)
   
   def __unicode__(self):
-      return self.name
+    return self.name
 
   def getAllTemplates(self):
-      return Evaluation.objects.filter(isTemplate=True)
+    return Evaluation.objects.filter(isTemplate=True)
 
 class QuestionType(models.Model):
   name            = models.CharField(max_length=128)

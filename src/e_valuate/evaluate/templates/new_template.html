@@ -1,0 +1,20 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Ny mall{% endblock %}
+
+{% block head %}Ny mall{% endblock %} 
+
+{% block content %}
+
+<div id="save">
+  <form action="" method="post">{% csrf_token %}
+<div id="textfield" style="margin-bottom: 40px;">
+    <label for="id_name">Mall Namn:</label>
+    {{evaluationForm.name}}
+</div> 
+  
+
+    <input type="submit" size="20px" value="Spara och fortsätt" id="spara"/>
+  </form>
+</div>
+{% endblock %}
