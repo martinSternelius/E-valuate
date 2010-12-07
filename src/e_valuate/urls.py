@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     (r'^logout/$', 'e_valuate.evaluate.views.logout'),
     (r'^admin/', include(admin.site.urls)),
     (r'^index/$', 'e_valuate.evaluate.views.index'),
-    (r'^evaluation/(?P<evaluation_id>\d+)/questions$', 'e_valuate.evaluate.views.questions'),    
+    (r'^evaluation/(?P<evaluation_id>\d+)/questions$', 'e_valuate.evaluate.views.questions'),
     (r'^evaluation/', include('evaluate.urls')),
     (r'^evaluation/(?P<evaluation_id>\d+)/addQuestion$', 'e_valuate.evaluate.views.addQuestion'),
 )

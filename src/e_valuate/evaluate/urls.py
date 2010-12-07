@@ -3,4 +3,5 @@ from e_valuate.evaluate.views import *
 
 urlpatterns = patterns('',
   (r'^new/', new),
+  (r'^new/template', new, True),
 )
