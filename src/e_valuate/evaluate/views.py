@@ -60,12 +60,9 @@ def new(request, isTemplate=False):
   c = RequestContext(request, {"templates" : templates, "evaluationForm" : EvaluationForm()})
   return HttpResponse(t.render(c))
 
-def addQuestion(request, evaluation_id):
-    #evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
-    evaluation = Evaluation.objects.get(pk=evaluation_id)
-    if request.method == "POST":
-        print request.POST
-    else:
-        questionForm = QuestionForm()
-        return render_to_response('evaluation/addQuestion.html', {'questionForm':questionForm, 'evaluation':evaluation})
-
+def addQuestion(request, evaluationId):
+  evaluation = Evaluation.objects.get(pk=evaluationId)
+  if request.method == "POST":
+      QuestionForm(request.POST).save()
+  questionForm = QuestionForm()
+  return render_to_response('evaluation/addQuestion.html', {'questionForm':questionForm, 'evaluation':evaluation})

@@ -9,18 +9,15 @@ from e_valuate import evaluate
 import e_valuate.evaluate.views
 
 urlpatterns = patterns('',    
-    (r'^$', 'e_valuate.evaluate.views.index'),
-    (r'^login/$', 'django.contrib.auth.views.login'),
-    (r'^logout/$', 'e_valuate.evaluate.views.logout'),
-    (r'^admin/', include(admin.site.urls)),
-    (r'^index/$', 'e_valuate.evaluate.views.index'),
-    (r'^evaluation/(?P<evaluation_id>\d+)/questions$', 'e_valuate.evaluate.views.questions'),
-    (r'^evaluation/', include('evaluate.urls')),
-    (r'^evaluation/(?P<evaluation_id>\d+)/addQuestion$', 'e_valuate.evaluate.views.addQuestion'),
+  (r'^$', 'e_valuate.evaluate.views.index'),
+  (r'^login/$', 'django.contrib.auth.views.login'),
+  (r'^logout/$', 'e_valuate.evaluate.views.logout'),
+  (r'^admin/', include(admin.site.urls)),
+  (r'^index/$', 'e_valuate.evaluate.views.index'),
+  (r'^evaluation/', include('evaluate.urls')),
 )
 
 if settings.DEBUG:
-    urlpatterns += patterns('',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    )
-
+  urlpatterns += patterns('',
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+  )
