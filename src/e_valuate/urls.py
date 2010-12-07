@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     (r'^index/$', 'e_valuate.evaluate.views.index'),
     (r'^evaluation/(?P<evaluation_id>\d+)/questions$', 'e_valuate.evaluate.views.questions'),
     (r'^evaluation/', include('evaluate.urls')),
-    (r'^evaluation/(?P<evaluation_id>\d+)/addQuestion$', 'e_valuate.evaluate.views.addQuestion'),
+    (r'^evaluation/(?P<evaluation_id>\d+)/add_question$', 'e_valuate.evaluate.views.addQuestion'),
 )
 
 if settings.DEBUG:

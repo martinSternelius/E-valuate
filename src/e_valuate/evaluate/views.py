@@ -1,4 +1,5 @@
-﻿from copy import deepcopy
+﻿# coding:utf-8
+from copy import deepcopy
 from django.template import loader, Context, RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -54,10 +55,13 @@ def new(request, isTemplate=False):
             newQuestion.save()
 
     return HttpResponseRedirect("/evaluation/"+ str(newEvaluation.id) +"/add_question")
-    
-  templates = Evaluation().getAllTemplates()
-  t = loader.get_template('new_evaluation.html')
-  c = RequestContext(request, {"templates" : templates, "evaluationForm" : EvaluationForm()})
+  if isTemplate:
+    t = loader.get_template('new_template.html')
+    c = RequestContext(request, {"evaluationForm" : EvaluationForm()})      
+  else:
+    templates = Evaluation().getAllTemplates()
+    t = loader.get_template('new_evaluation.html')
+    c = RequestContext(request, {"templates" : templates, "evaluationForm" : EvaluationForm()})
   return HttpResponse(t.render(c))
 
 def addQuestion(request, evaluation_id):
