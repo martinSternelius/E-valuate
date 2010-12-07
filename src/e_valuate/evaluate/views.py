@@ -2,15 +2,14 @@
 from django.template import loader, Context, RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
-from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question
+from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, QuestionForm
 from evaluate.models import *
-from e_valuate.evaluate.models import Evaluation, QuestionForm
 from django.contrib import auth
 
 
 def index(request):
   t = loader.get_template('index.html')
-  c = RequestContext(request)
+  c = Context(request)
   return HttpResponse(t.render(c))
 
 def logout(request):
@@ -67,4 +66,7 @@ def addQuestion(request, evaluation_id):
   else:
     questionForm = QuestionForm()
     return render_to_response('evaluation/addQuestion.html', {'questionForm':questionForm, 'evaluation':evaluation})
+
+def addIntegerAlternatives(request, questionId, low, high):
+  question = Question.objects.get(pk=questionId)
 

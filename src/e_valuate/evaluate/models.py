@@ -31,6 +31,12 @@ class Question(models.Model):
   
   def __unicode__(self):
     return self.question
+  
+  def generateIntegerAlternatives(self, low, high):
+    intList = range(low, high+1)
+    for int in intList:
+      integerAlternative = IntegerAlternative(value=int, question=self)
+      integerAlternative.save()
 
 class Respondent(models.Model):
   answeringURL  = models.URLField(max_length=64)
@@ -49,6 +55,7 @@ class Answer(models.Model):
     return self.int_answer.to_s + self.string_answer
 
 class StringAlternative(models.Model):
+  question = models.ForeignKey(Question)
   value = models.CharField(max_length=128)
   question = models.ForeignKey(Question)
       
@@ -61,7 +68,7 @@ class IntegerAlternative(models.Model):
   
   def __unicode__(self):
     return self.value
-  
+    
 class EvaluationForm(ModelForm):
   class Meta:
     exclude = ('isTemplate', 'created', 'modified')
