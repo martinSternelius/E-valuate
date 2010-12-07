@@ -1,6 +1,5 @@
 from django.conf.urls.defaults import *
-from e_valuate.evaluate.views import *
 
 urlpatterns = patterns('',
-  (r'^new/', new),
+  (r'^new/', 'e_valuate.evaluate.views.new'),
 )

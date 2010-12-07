@@ -2,25 +2,24 @@
 from django.template import loader, Context, RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
-from django.contrib import auth
-from evaluate.models import Evaluation, EvaluationForm, Question
+from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question
 from evaluate.models import *
 from e_valuate.evaluate.models import Evaluation, QuestionForm
-from e_valuate import evaluate
+from django.contrib import auth
 
 
 def index(request):
-    t = loader.get_template('index.html')
-    c = RequestContext(request)
-    return HttpResponse(t.render(c))
+  t = loader.get_template('index.html')
+  c = RequestContext(request)
+  return HttpResponse(t.render(c))
 
 def logout(request):
-    auth.logout(request)
-    return HttpResponseRedirect('/')
+  auth.logout(request)
+  return HttpResponseRedirect('/')
 
 def questions(request, evaluation_id):
-    evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
-    return render_to_response('evaluation/questions.html', {'evaluation': evaluation})
+  evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
+  return render_to_response('evaluation/questions.html', {'evaluation': evaluation})
 
 
 def new(request):
@@ -55,11 +54,11 @@ def new(request):
 
 
 def addQuestion(request, evaluation_id):
-    #evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
-    evaluation = Evaluation.objects.get(pk=evaluation_id)
-    if request.method == "POST":
-        print request.POST
-    else:
-        questionForm = QuestionForm()
-        return render_to_response('evaluation/addQuestion.html', {'questionForm':questionForm, 'evaluation':evaluation})
+  #evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
+  evaluation = Evaluation.objects.get(pk=evaluation_id)
+  if request.method == "POST":
+    print request.POST
+  else:
+    questionForm = QuestionForm()
+    return render_to_response('evaluation/addQuestion.html', {'questionForm':questionForm, 'evaluation':evaluation})
 
