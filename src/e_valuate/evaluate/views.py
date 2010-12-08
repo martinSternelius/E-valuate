@@ -1,11 +1,12 @@
 #coding: utf-8
 from copy import deepcopy
-from django.template import loader, Context, RequestContext
+from django.contrib import auth
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
-from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, QuestionForm
+from django.template import loader, Context, RequestContext
+from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, \
+  QuestionForm, QuestionType
 from evaluate.models import *
-from django.contrib import auth
 
 def index(request):
   t = loader.get_template('index.html')
@@ -16,8 +17,8 @@ def logout(request):
   auth.logout(request)
   return HttpResponseRedirect('/')
 
-def questions(request, evaluation_id):
-  evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
+def questions(request, evaluationId):
+  evaluation = get_object_or_404(Evaluation, pk=evaluationId)
   return render_to_response('evaluation/questions.html', {'evaluation': evaluation})
 
 def new(request, isTemplate=False):
@@ -64,9 +65,15 @@ def new(request, isTemplate=False):
 def addQuestion(request, evaluationId):
   evaluation = Evaluation.objects.get(pk=evaluationId)
   if request.method == "POST":
-    QuestionForm(request.POST).save()
+    question = QuestionForm(request.POST).save(commit=False)
+    question.order = evaluation.getNextQuestionOrder()
+    question.evaluation = evaluation
+    question.save()
+    
   questionForm = QuestionForm()
-  return render_to_response('evaluation/addQuestion.html', {'questionForm':questionForm, 'evaluation':evaluation})
+  template = loader.get_template('evaluation/addQuestion.html')
+  context = RequestContext(request, {'questionForm':questionForm, 'evaluation':evaluation})
+  return HttpResponse(template.render(context))
 
 def addIntegerAlternatives(request, questionId, low, high):
   question = Question.objects.get(pk=questionId)
