@@ -1,4 +1,4 @@
-﻿# coding:utf-8
+#coding: utf-8
 from copy import deepcopy
 from django.template import loader, Context, RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
