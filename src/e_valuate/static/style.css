@@ -18,6 +18,13 @@ h1
 {
 	margin-left:150px;
 	clear:right;
+}´
+
+#list
+{
+border-style:solid;
+border-width:1px;
+margin-right:800px;
 }
 
 #option
