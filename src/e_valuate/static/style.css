@@ -26,6 +26,16 @@ h1
 	margin-bottom:30px;
 }
 
+#sendEvaluation textarea#respondents {
+  display: block;
+  clear: right;
+}
+
+#sendEvaluation input[type="submit"] {
+  margin-top: 10px;
+  font-size: large;
+}
+
 #evaluation
 {
   border: 1px solid black;

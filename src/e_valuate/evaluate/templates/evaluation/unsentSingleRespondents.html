@@ -1,4 +1,8 @@
 {% extends "evaluation/unsentSingle.html" %}
 {% block subSubContent %}
-  RESSSSSSSPONDENTS
+  <form id="sendEvaluation" action="" method="post">{% csrf_token %}
+    <label for="respondents"><h3>Skriv mailadresserna som utvärderingen ska skickas till</h3><p>Separera addresser med kommatecken</p></label>
+    <textarea cols="40" rows="30" name="respondents" id="respondents"></textarea>
+    <input type="submit" value="Skicka utvärdering! (oåterkalleligt)" />
+  </form>
 {% endblock %}

@@ -36,7 +36,7 @@ def viewSingle(request, evaluationId, activeSubView='summary'):
       "respondents"   : "evaluation/unsentSingleRespondents.html",
     }
     menu.addItem({ "label" : "Summering"    , "subView" : "summary" })
-    menu.addItem({ "label" : "Respondenter" , "subView" : "respondents" })
+    menu.addItem({ "label" : "Skicka utvärdering" , "subView" : "respondents" })
   
   template = templates[activeSubView]
   
