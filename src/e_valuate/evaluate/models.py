@@ -5,7 +5,8 @@ from django.forms import ModelForm
 
 class Evaluation(models.Model):
   name        = models.CharField(max_length=128, verbose_name="Utvärderingens Namn")
-  isTemplate  = models.BooleanField(blank=True)
+  isTemplate  = models.BooleanField(blank=True) # false är default värdet
+  isSent      = models.BooleanField(blank=True) # false är default värdet
   created     = models.DateTimeField(auto_now_add = True)
   modified    = models.DateTimeField(auto_now = True)
   
@@ -27,7 +28,7 @@ class QuestionType(models.Model):
   
   def __unicode__(self):
     return self.name
-  
+
 class Question(models.Model):
   question              = models.CharField('fråga', max_length=128)
   order                 = models.IntegerField()

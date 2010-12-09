@@ -1,0 +1,13 @@
+{% extends "evaluation/unsentSingle.html" %}
+{% block subSubContent %}
+  <p>Ej skickad</p>
+  <h2>Frågor</h2>
+  <ol id="evaluationQuestions">
+    {% for evaluationQuestion in evaluation.questions %}
+      <li>
+        <h2><a href="/evaluation/{{evaluation.id}}/addQuestions">{{evaluationQuestion.question}}</a></h2>
+        <p>{{evaluationQuestion.questionType.name}}</p>
+      </li>
+    {% endfor %}
+  </ol>
+{% endblock %}

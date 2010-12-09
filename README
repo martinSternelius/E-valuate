@@ -13,3 +13,8 @@ Include in MIDDLEWARE_CLASSES
   - django.contrib.sessions.middleware.SessionMiddleware
   - django.contrib.auth.middleware.AuthenticationMiddleware
   - evaluate.middleware.UrlAccessRestrictions
+
+Include (see http://stackoverflow.com/questions/446026/django-how-do-you-serve-media-stylesheets-and-link-to-them-within-templates ) :
+MEDIA_ROOT = 'C:/Server/Projects/E-valuate/src/e_valuate/static/' replace with your own structure
+MEDIA_URL = '/static/'
+ADMIN_MEDIA_PREFIX = '/media/'
