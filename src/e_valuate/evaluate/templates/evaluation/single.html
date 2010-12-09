@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block head %}Utvärdering: {{evaluation.name}}{% endblock %}
+{% block content %}
+<div id="evaluation">
+  <ul id="subViewsMenu">{% block evaluationViewMenuItems %}{% endblock %}</ul>
+  <div id="subViewContent">{% block subContent %}{% endblock %}</div>
+</div>
+{% endblock %}

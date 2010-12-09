@@ -1,4 +1,5 @@
-﻿from copy import deepcopy
+﻿# coding:utf-8
+from copy import deepcopy
 from django.template import loader, Context, RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -12,11 +13,42 @@ def index(request):
   c = RequestContext(request)
   return HttpResponse(t.render(c))
 
+def viewSingle(request, evaluationId, activeSubView='summary'):
+  
+  if activeSubView == '' or not activeSubView:
+    activeSubView = 'summary'
+
+  for c in activeSubView: 
+    if c == "/": 
+      c = ""
+  
+  evaluation = Evaluation.objects.get(id=evaluationId)
+  evaluation.questions = Question.objects.filter(evaluation=evaluation)
+
+  menu = Menu(activeSubView, "/evaluation/"+evaluationId+"/")
+
+  if evaluation.isSent:
+    templates = {
+      "summary" : "evaluation/sentSingleSummary.html",
+    }
+    menu.addItem({ "label" : "Summering"    , "subView" : "summary" })
+  else:
+    templates = {
+      "summary"       : "evaluation/unsentSingleSummary.html",
+      "respondents"   : "evaluation/unsentSingleRespondents.html",
+    }
+    menu.addItem({ "label" : "Summering"    , "subView" : "summary" })
+    menu.addItem({ "label" : "Respondenter" , "subView" : "respondents" })
+  
+  template = templates[activeSubView]
+  
+  return render_to_response(template, {'evaluation': evaluation, 'menu': menu})
+
 def logout(request):
   auth.logout(request)
   return HttpResponseRedirect('/')
 
-def questions(request, evaluation_id):
+def questions(request, evaluationId):
   evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
   return render_to_response('evaluation/questions.html', {'evaluation': evaluation})
 
@@ -64,3 +96,45 @@ def addQuestion(request, evaluationId):
     QuestionForm(request.POST).save()
   questionForm = QuestionForm()
   return render_to_response('evaluation/addQuestion.html', {'questionForm':questionForm, 'evaluation':evaluation})
+
+def list(request, sent):
+  if sent:
+    evaluations = Evaluation.objects.filter(isSent=True)
+    return render_to_response('evaluation/sentAll.html', {'evaluations':evaluations})
+  else:
+    evaluations = Evaluation.objects.filter(isSent=False)
+    return render_to_response('evaluation/unsentAll.html', {'evaluations':evaluations})
+
+## Classer som hjälper templates
+
+class MenuItem:
+
+  def __init__(self, menu, label, subView):
+    self.label = label
+    self.cssClass = False
+    self.subView = subView
+    self.url = menu.urlBeginning
+    self.url += subView
+
+class Menu:
+
+  def __init__(self, activeSubView=False, urlBeginning=""):
+    self._items = []
+    self.activeSubView = activeSubView
+    self.urlBeginning = urlBeginning
+
+  def addItem(self, itemData):
+    
+    item = MenuItem(self,itemData["label"], itemData["subView"])
+
+    if self.activeSubView and item.subView == self.activeSubView:
+      item.cssClass = "active"
+    
+    self._items.append(item)
+
+  def getItems(self):
+    return self._items
+  
+  def __iter__(self):
+    for item in self._items:
+      yield item

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Ej skickade Utvärderingar{% endblock %}
+{% block head %}Ej skickade Utvärderingar{% endblock %}
+{% block content %}
+<table>
+  <thead>
+    <tr>
+      <td>Utvärderingens Namn</td>
+      <td>Skapad</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for evaluation in evaluations %}
+      <tr>
+        <td><a href="/evaluation/{{evaluation.id}}">{{evaluation.name}}</a></td>
+        <td>{{evaluation.created}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
