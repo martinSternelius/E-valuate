@@ -1,4 +1,4 @@
-
+﻿
 # coding:utf-8
 
 from django.db import models
@@ -19,6 +19,12 @@ class Evaluation(models.Model):
 class QuestionType(models.Model):
   name            = models.CharField(max_length=128)
   answerDatatype  = models.CharField(max_length=16, choices = (('integer', 'integer'), ('string', 'string'),))
+  
+  def __unicode__(self):
+    return self.name
+    
+class QuestionList(models.Model):
+  name = models.ListQuestion()
   
   def __unicode__(self):
     return self.name
@@ -80,3 +86,11 @@ class QuestionForm(ModelForm):
   class Meta:
     model = Question
     fields = ('question', 'hasExtraTextField', 'extraTextFieldHeading', 'questionType')
+
+
+class QuestionList(ModelForm):
+  class Meta:
+    model = Question
+    fields = ('question', 'hasExtraTextField', 'extraTextFieldHeading', 'questionType')
+  
+

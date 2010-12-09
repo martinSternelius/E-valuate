@@ -70,3 +70,10 @@ def addQuestion(request, evaluationId):
 
 def addIntegerAlternatives(request, questionId, low, high):
   question = Question.objects.get(pk=questionId)
+  
+def listQuestion(request, questionId):
+  for templateQuestion in templateQuestions
+    question_list = Article.objects.filter(list_question)
+    return render_to_response('evaluation/list_questions.html', {'evaluation': evaluation})
+    
+    
