@@ -4,13 +4,8 @@ from django.contrib import auth
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import loader, Context, RequestContext
-<<<<<<< HEAD
 from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, QuestionForm, QuestionType, IntegerAlternativeForm, StringAlternativeForm
 from evaluate.models import *
-import string
-=======
-from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, QuestionForm, QuestionType
->>>>>>> FETCH_HEAD
 
 def index(request):
   t = loader.get_template('index.html')
