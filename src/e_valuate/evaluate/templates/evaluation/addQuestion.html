@@ -6,7 +6,8 @@
 	Frågor för utvärderingen {{ evaluation.name }}
 {% endblock %}
 {% block content %}
-	<form action="#" method="post">
+	<form action="" method="post">
+	{% csrf_token %}
 		{{ questionForm }}
 		<input type="submit" value="Ok" />
 	</form>

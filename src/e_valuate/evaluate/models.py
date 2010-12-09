@@ -1,4 +1,4 @@
-# coding: utf-8
+# coding:utf-8
 from django.db import models
 from django.forms import ModelForm
 
@@ -14,7 +14,12 @@ class Evaluation(models.Model):
 
   def getAllTemplates(self):
     return Evaluation.objects.filter(isTemplate=True)
-
+  
+  def getNextQuestionOrder(self):
+    questions = self.question_set.all().order_by('-order')
+    nextOrder = questions[0].order+1 if len(questions) > 0 else 1
+    return nextOrder
+  
 class QuestionType(models.Model):
   name            = models.CharField(max_length=128)
   answerDatatype  = models.CharField(max_length=16, choices = (('integer', 'integer'), ('string', 'string'),))
@@ -32,7 +37,19 @@ class Question(models.Model):
   
   def __unicode__(self):
     return self.question
-
+  
+  def generateIntegerAlternatives(self, low, high):
+    intList = range(low, high+1)
+    for int in intList:
+      integerAlternative = IntegerAlternative(value=int, question=self)
+      integerAlternative.save()
+      
+  def generateStringAlternatives(self, string):
+    stringList = string.split(',')
+    for string in stringList:
+      stringAlternative = StringAlternative(value=string, question=self)
+      stringAlternative.save()
+    
 class Respondent(models.Model):
   answeringURL  = models.URLField(max_length=64)
   email         = models.EmailField()
@@ -50,6 +67,7 @@ class Answer(models.Model):
     return self.int_answer.to_s + self.string_answer
 
 class StringAlternative(models.Model):
+  question = models.ForeignKey(Question)
   value = models.CharField(max_length=128)
   question = models.ForeignKey(Question)
       
@@ -62,7 +80,7 @@ class IntegerAlternative(models.Model):
   
   def __unicode__(self):
     return self.value
-  
+    
 class EvaluationForm(ModelForm):
   class Meta:
     exclude = ('isTemplate', 'created', 'modified')

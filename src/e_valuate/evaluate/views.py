@@ -1,16 +1,14 @@
-﻿# coding:utf-8
+# coding:utf-8
 from copy import deepcopy
-from django.template import loader, Context, RequestContext
+from django.contrib import auth
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
-from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question
-from evaluate.models import *
-from e_valuate.evaluate.models import Evaluation, QuestionForm
-from django.contrib import auth
+from django.template import loader, Context, RequestContext
+from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, QuestionForm, QuestionType
 
 def index(request):
   t = loader.get_template('index.html')
-  c = RequestContext(request)
+  c = Context(request)
   return HttpResponse(t.render(c))
 
 def viewSingle(request, evaluationId, activeSubView='summary'):
@@ -49,7 +47,7 @@ def logout(request):
   return HttpResponseRedirect('/')
 
 def questions(request, evaluationId):
-  evaluation = get_object_or_404(Evaluation, pk=evaluation_id)
+  evaluation = get_object_or_404(Evaluation, pk=evaluationId)
   return render_to_response('evaluation/questions.html', {'evaluation': evaluation})
 
 def new(request, isTemplate=False):
@@ -84,18 +82,28 @@ def new(request, isTemplate=False):
             newQuestion.save()
 
     return HttpResponseRedirect("/evaluation/"+ str(newEvaluation.id) +"/add_question")
-    
-  templates = Evaluation().getAllTemplates()
-  t = loader.get_template('new_evaluation.html')
-  c = RequestContext(request, {"templates" : templates, "evaluationForm" : EvaluationForm()})
+  if isTemplate:
+    t = loader.get_template('new_template.html')
+    c = RequestContext(request, {"evaluationForm" : EvaluationForm()})      
+  else:
+    templates = Evaluation().getAllTemplates()
+    t = loader.get_template('new_evaluation.html')
+    c = RequestContext(request, {"templates" : templates, "evaluationForm" : EvaluationForm()})
   return HttpResponse(t.render(c))
 
 def addQuestion(request, evaluationId):
   evaluation = Evaluation.objects.get(pk=evaluationId)
   if request.method == "POST":
-    QuestionForm(request.POST).save()
+    question = QuestionForm(request.POST).save(commit=False)
+    question.order = evaluation.getNextQuestionOrder()
+    question.evaluation = evaluation
+    question.save()
+    
   questionForm = QuestionForm()
-  return render_to_response('evaluation/addQuestion.html', {'questionForm':questionForm, 'evaluation':evaluation})
+  
+  template = loader.get_template('evaluation/addQuestion.html')
+  context = RequestContext(request, {'questionForm':questionForm, 'evaluation':evaluation})
+  return HttpResponse(template.render(context))
 
 def list(request, sent):
   if sent:
