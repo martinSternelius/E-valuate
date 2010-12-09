@@ -4,9 +4,9 @@ from django.contrib import auth
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import loader, Context, RequestContext
-from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, \
-  QuestionForm, QuestionType
+from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, QuestionForm, QuestionType, IntegerAlternativeForm, StringAlternativeForm
 from evaluate.models import *
+import string
 
 def index(request):
   t = loader.get_template('index.html')
@@ -69,11 +69,62 @@ def addQuestion(request, evaluationId):
     question.order = evaluation.getNextQuestionOrder()
     question.evaluation = evaluation
     question.save()
+    if question.questionType.hasAlternatives:
+      return addAlternatives(request, evaluationId, question.order)    
     
   questionForm = QuestionForm()
   template = loader.get_template('evaluation/addQuestion.html')
   context = RequestContext(request, {'questionForm':questionForm, 'evaluation':evaluation})
   return HttpResponse(template.render(context))
 
-def addIntegerAlternatives(request, questionId, low, high):
-  question = Question.objects.get(pk=questionId)
+def xaddAlternatives(request, evaluationId, questionOrder):
+  evaluation = Evaluation.objects.get(pk=evaluationId)
+  question = evaluation.question_set.get(order=questionOrder)
+  
+  if request.method == 'POST':
+    if question.questionType.answerDatatype == 'integer':
+      question.generateIntegerAlternatives(int(request.POST['low']), int(request.POST['high']))
+    else:
+      question.generateStringAlternatives(request.POST['alternatives'])
+  return questions(request, evaluationId)
+  
+def addAlternatives(request, evaluationId, questionOrder):
+  evaluation = Evaluation.objects.get(pk=evaluationId)
+  question = evaluation.question_set.get(order=questionOrder)
+  
+  if not question.questionType.hasAlternatives:
+    return questions(request, evaluationId)
+  else:
+    dataType = question.questionType.answerDatatype
+    if dataType == 'integer':
+      return addIntegerAlternatives(request, evaluationId, questionOrder)
+    else:
+      return addStringAlternatives(request, evaluationId, questionOrder)
+      
+def addIntegerAlternatives(request, evaluationId, questionOrder):
+  evaluation = Evaluation.objects.get(pk=evaluationId)
+  question = evaluation.question_set.get(order=questionOrder)
+  if request.method == 'POST':
+    form = IntegerAlternativeForm(request.POST)
+    if form.is_valid():
+      question.generateIntegerAlternatives(form.cleaned_data.get('low'), form.cleaned_data.get('high'))
+      return questions(request, evaluationId)
+  else:
+    form = IntegerAlternativeForm()
+  template = loader.get_template('evaluation/question/addIntegerAlternatives.html')
+  context  = RequestContext(request, {'form':form, 'question':question})
+  return HttpResponse(template.render(context))
+
+def addStringAlternatives(request, evaluationId, questionOrder):
+  evaluation = Evaluation.objects.get(pk=evaluationId)
+  question = evaluation.question_set.get(order=questionOrder)
+  if request.method == 'POST':
+    form = StringAlternativeForm(request.POST)
+    if form.is_valid():
+      question.generateStringAlternatives(form.cleaned_data.get('alternatives'))
+      return questions(request, evaluationId)
+  else:
+    form = StringAlternativeForm()
+  template = loader.get_template('evaluation/question/addStringAlternatives.html')
+  context  = RequestContext(request, {'form':form, 'question':question})
+  return HttpResponse(template.render(context))
