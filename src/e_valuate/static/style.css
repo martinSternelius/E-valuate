@@ -33,6 +33,16 @@ margin-right:800px;
 	margin-bottom:30px;
 }
 
+#sendEvaluation textarea#respondents {
+  display: block;
+  clear: right;
+}
+
+#sendEvaluation input[type="submit"] {
+  margin-top: 10px;
+  font-size: large;
+}
+
 #evaluation
 {
   border: 1px solid black;
@@ -79,4 +89,10 @@ margin-right:800px;
   padding: 7px 7px 0 7px;
   display: block;
   height: 33px;
+}
+
+.intfield
+{
+  width:40px;
+  display:inline;	
 }
