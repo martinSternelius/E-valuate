@@ -67,6 +67,21 @@ class Answer(models.Model):
   
   def __unicode__(self):
     return self.int_answer.to_s + self.string_answer
+
+class StringAlternative(models.Model):
+  question = models.ForeignKey(Question)
+  value = models.CharField(max_length=128)
+  question = models.ForeignKey(Question)
+      
+  def __unicode__(self):
+    return self.value
+  
+class IntegerAlternative(models.Model):
+  value = models.IntegerField()
+  question = models.ForeignKey(Question)
+  
+  def __unicode__(self):
+    return self.value
     
 class EvaluationForm(ModelForm):
   class Meta:
