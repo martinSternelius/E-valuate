@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}
+  Ange talintervall
+{% endblock %}
+{% block head %}
+  Ange talintervall
+{% endblock %}
+{% block content %}
+  <form action="/evaluation/{{question.evaluation.id}}/questions/{{question.order}}/add_alternatives" method="post">
+  {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Ok" />
+  </form>
+{% endblock %}

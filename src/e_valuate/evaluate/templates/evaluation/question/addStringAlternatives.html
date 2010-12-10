@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+  Lägg till svarsalternativ
+{% endblock %}
+{% block head %}
+  Lägg till svarsalternativ
+{% endblock %}
+{% block content %}
+  <form action="/evaluation/{{question.evaluation.id}}/questions/{{question.order}}/add_alternatives" method="post">
+  {% csrf_token %}
+    <label for="alternatives">Skriv in svarsalternativ, separerade med kommatecken:</label>
+    <input type="text" name="alternatives" id="alternatives"/>
+    <input type="submit" value="Ok" />
+  </form>
+{% endblock %}

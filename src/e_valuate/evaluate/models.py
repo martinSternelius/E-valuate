@@ -1,4 +1,5 @@
 # coding:utf-8
+from django import forms
 from django.db import models
 from django.forms import ModelForm
 
@@ -23,6 +24,7 @@ class Evaluation(models.Model):
 class QuestionType(models.Model):
   name            = models.CharField(max_length=128)
   answerDatatype  = models.CharField(max_length=16, choices = (('integer', 'integer'), ('string', 'string'),))
+  hasAlternatives = models.BooleanField()
   
   def __unicode__(self):
     return self.name
@@ -90,3 +92,21 @@ class QuestionForm(ModelForm):
   class Meta:
     model = Question
     fields = ('question', 'hasExtraTextField', 'extraTextFieldHeading', 'questionType')
+    
+class IntegerAlternativeForm(forms.Form):
+  low = forms.IntegerField('Maximum')
+  high = forms.IntegerField('Minimum')
+  
+  def clean(self):
+    cleaned_data = self.cleaned_data
+    high = cleaned_data.get('high')
+    low = cleaned_data.get('low')
+    
+    if high and low:
+      if high <= low:
+        raise forms.ValidationError('Talen måste skrivas från lägst till högst, och det högra talet måste vara högre än det vänstra!')
+      
+    return cleaned_data
+  
+class StringAlternativeForm(forms.Form):
+  alternatives = forms.CharField('Skriv in svarsalternativ separerade med kommatecken')

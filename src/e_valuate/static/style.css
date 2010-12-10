@@ -83,3 +83,9 @@ h1
   display: block;
   height: 33px;
 }
+
+.intfield
+{
+  width:40px;
+  display:inline;	
+}
