@@ -1,3 +1,9 @@
+body
+{
+  height: 100%;
+  width: 100%;
+}
+
 h1
 {
 	text-align:center;
@@ -95,4 +101,28 @@ margin-right:800px;
 {
   width:40px;
   display:inline;	
+}
+
+#listQuestions, #addQuestion
+{
+float: left;
+height: 100%;
+}
+
+#addQuestion
+{
+  border-left: 1px solid black;
+  width: 799px;
+}
+
+#listQuestions
+{
+  width: 160px;
+}
+
+#contentWrapper
+{
+  border:1px solid black;
+  overflow: hidden;
+  width: 960px;
 }

@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import loader, Context, RequestContext
 from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, QuestionForm, QuestionType, IntegerAlternativeForm, StringAlternativeForm
 from evaluate.models import *
+from evaluate import models
 
 def index(request):
   t = loader.get_template('index.html')
@@ -92,17 +93,27 @@ def new(request, isTemplate=False):
     c = RequestContext(request, {"templates" : templates, "evaluationForm" : EvaluationForm()})
   return HttpResponse(t.render(c))
 
-def addQuestion(request, evaluationId):
+def addQuestion(request, evaluationId, questionId=False):
   evaluation = Evaluation.objects.get(pk=evaluationId)
+  if questionId:
+    question = Question.objects.get(id=questionId)
   if request.method == "POST":
-    question = QuestionForm(request.POST).save(commit=False)
-    question.order = evaluation.getNextQuestionOrder()
-    question.evaluation = evaluation
-    question.save()
-    if question.questionType.hasAlternatives:
-      return addAlternatives(request, evaluationId, question.order)    
-    
-  questionForm = QuestionForm()
+    questionForm = None
+    if questionId:
+      questionForm = QuestionForm(request.POST, instance=question).save(commit=False)
+      questionForm.order = question.order
+    else:
+      questionForm = QuestionForm(request.POST).save(commit=False)
+      questionForm.order = evaluation.getNextQuestionOrder()
+      questionForm.evaluation = evaluation
+    questionForm.save()
+    if not questionId and questionForm.questionType.hasAlternatives:
+      return addAlternatives(request, evaluationId, questionForm.order)
+  if questionId:
+    questionForm = QuestionForm(instance=question)
+    del questionForm.fields['questionType']
+  else:
+    questionForm = QuestionForm()
   
   template = loader.get_template('evaluation/addQuestion.html')
   context = RequestContext(request, {'questionForm':questionForm, 'evaluation':evaluation, "questions" : Question.objects.filter(evaluation=evaluation)})
@@ -149,6 +160,10 @@ def addStringAlternatives(request, evaluationId, questionOrder):
   context  = RequestContext(request, {'form':form, 'question':question})
   return HttpResponse(template.render(context))
 
+def removeQuestion(request, evaluationId, questionId):
+  Question.objects.get(id=questionId).delete()
+  return HttpResponseRedirect("/evaluation/"+evaluationId+"/add_question")
+  
 def list(request, sent):
   if sent:
     evaluations = Evaluation.objects.filter(isSent=True)

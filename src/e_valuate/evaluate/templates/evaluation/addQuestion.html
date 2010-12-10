@@ -7,23 +7,24 @@
 {% endblock %}
 
 {% block content %}
+<div id="contentWrapper">
   <div id="listQuestions">
-  <p>Frågor:</p>
-  <p>1. Hur nöjd är du med kursen</p>
-  <p>2.<a href="default.asp" target="_blank">Är du nöjd med kurslitteraturen?</a></p>
-  <a href="/people/{{ object.id }}/">{{ object.name }}</a>
-    
-    <div id="textfield" style="margin-bottom: 40px;">
-            {% for question in questions %}
-        <p>{{ question.question }}</p>
-            {% endfor %}
-    </div> 
+    <p>Frågor:</p>
+     <ol>
+    {% for question in questions %}
+      <li>
+        <a href="/evaluation/{{evaluation.id}}/add_question/{{question.id}}">{{ question.question }}</a>
+        <a href="/evaluation/{{evaluation.id}}/remove_question/{{question.id}}">Ta bort</a>
+      </li>
+    {% endfor %}
+    </ol> 
+    <a href="/evaluation/{{evaluation.id}}/add_question/">Ny Fråga</a>
   </div>
-  <div id="addQuestion">>
-    <form action="" method="post">
-    {% csrf_token %}
-      {{ questionForm }}
+  <div id="addQuestion">
+    <form action="" method="post">{% csrf_token %}
+      {{ questionForm.as_p }}
       <input type="submit" value="Ok" />
     </form>
   </div>
+</div>
 {% endblock %}
