@@ -7,14 +7,15 @@
 <p>1. Hur nöjd är du med kursen</p>
 <p>2.<a href="default.asp" target="_blank">Är du nöjd med kurslitteraturen?</a></p>
 <a href="/people/{{ object.id }}/">{{ object.name }}</a>
-  <form action="" method="post">{% csrf_token %}
+  
 <div id="textfield" style="margin-bottom: 40px;">
-   
-    <p>{{ questionList.name }}</p>
+        {% for question in questions %}
+    <p>{{ question.question }}</p>
+        {% endfor %}
 </div> 
   
 
-    <input type="submit" size="20px" value="Ny fråga" id="spara"/>
-  </form>
+
+  
 </div>
 {% endblock %}

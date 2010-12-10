@@ -1,6 +1,7 @@
 h1
 {
 	text-align:center;
+  margin: 0 auto;
 }
 
 #create_name
@@ -30,5 +31,52 @@ margin-right:800px;
 #option
 {
 	margin-bottom:30px;
-	
+}
+
+#evaluation
+{
+  border: 1px solid black;
+}
+
+#evaluation #subViewContent
+{
+  padding: 20px;
+  margin-top: 40px;
+}
+
+#evaluation #subViewsMenu 
+{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+  border-bottom: 1px solid black;
+  top: -1px;
+  float: left;
+  width: 100%;
+  height: 40px;
+}
+
+#evaluation #subViewsMenu li
+{
+  float: left;
+  border-width: 0 1px 1px 0;
+  border-style: solid;
+  border-color: black;
+  height: 40px;
+}
+
+#evaluation #subViewsMenu li.active
+{
+  border-width: 0 1px 0 0;
+  height: 41px;
+  background: white;
+}
+
+#evaluation #subViewsMenu li a
+{
+  text-decoration: none;
+  padding: 7px 7px 0 7px;
+  display: block;
+  height: 33px;
 }

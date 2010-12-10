@@ -1,0 +1,12 @@
+{% extends "evaluation/single.html" %}
+{% block evaluationViewMenuItems %}
+  {% for menuItem in menu %}
+    <li{% if menuItem.cssClass %}
+      {{" class=\""}}{{menuItem.cssClass}}{{"\""}} 
+    {% endif %}><a href="{{menuItem.url}}">{{menuItem.label}}</a></li>
+  {% endfor %}
+{% endblock %}
+{% block subContent%}
+  {% block subSubContent %}
+  {% endblock%}
+{% endblock%}

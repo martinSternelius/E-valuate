@@ -1,0 +1,3 @@
+single.html is the father of both unsent single and sent single and it inherits base.html
+unsentSingle.html is the father of all subTemplates of an unsent evaluation (and when i write subTemplates read: tabs, because thats how we structure it visually)
+unsentSingleSummary.html is the summary tab of the unsentSingle template

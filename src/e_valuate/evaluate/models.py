@@ -1,12 +1,11 @@
-﻿
 # coding:utf-8
-
 from django.db import models
 from django.forms import ModelForm
 
 class Evaluation(models.Model):
   name        = models.CharField(max_length=128, verbose_name="Utvärderingens Namn")
-  isTemplate  = models.BooleanField(blank=True)
+  isTemplate  = models.BooleanField(blank=True) # false är default värdet
+  isSent      = models.BooleanField(blank=True) # false är default värdet
   created     = models.DateTimeField(auto_now_add = True)
   modified    = models.DateTimeField(auto_now = True)
   
@@ -15,20 +14,19 @@ class Evaluation(models.Model):
 
   def getAllTemplates(self):
     return Evaluation.objects.filter(isTemplate=True)
-
+  
+  def getNextQuestionOrder(self):
+    questions = self.question_set.all().order_by('-order')
+    nextOrder = questions[0].order+1 if len(questions) > 0 else 1
+    return nextOrder
+  
 class QuestionType(models.Model):
   name            = models.CharField(max_length=128)
   answerDatatype  = models.CharField(max_length=16, choices = (('integer', 'integer'), ('string', 'string'),))
   
   def __unicode__(self):
     return self.name
-    
-class QuestionList(models.Model):
-  name = models.ListQuestion()
-  
-  def __unicode__(self):
-    return self.name
-  
+
 class Question(models.Model):
   question              = models.CharField('fråga', max_length=128)
   order                 = models.IntegerField()
@@ -45,7 +43,13 @@ class Question(models.Model):
     for int in intList:
       integerAlternative = IntegerAlternative(value=int, question=self)
       integerAlternative.save()
-
+      
+  def generateStringAlternatives(self, string):
+    stringList = string.split(',')
+    for string in stringList:
+      stringAlternative = StringAlternative(value=string, question=self)
+      stringAlternative.save()
+    
 class Respondent(models.Model):
   answeringURL  = models.URLField(max_length=64)
   email         = models.EmailField()
@@ -86,11 +90,3 @@ class QuestionForm(ModelForm):
   class Meta:
     model = Question
     fields = ('question', 'hasExtraTextField', 'extraTextFieldHeading', 'questionType')
-
-
-class QuestionList(ModelForm):
-  class Meta:
-    model = Question
-    fields = ('question', 'hasExtraTextField', 'extraTextFieldHeading', 'questionType')
-  
-
