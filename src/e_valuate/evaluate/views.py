@@ -6,7 +6,6 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import loader, Context, RequestContext
 from e_valuate.evaluate.models import Evaluation, EvaluationForm, Question, QuestionForm, QuestionType, IntegerAlternativeForm, StringAlternativeForm
 from evaluate.models import *
-from evaluate import models
 
 def index(request):
   t = loader.get_template('index.html')
@@ -108,7 +107,7 @@ def addQuestion(request, evaluationId, questionId=False):
       questionForm.evaluation = evaluation
     questionForm.save()
     if not questionId and questionForm.questionType.hasAlternatives:
-      return addAlternatives(request, evaluationId, questionForm.order)
+      return HttpResponseRedirect('/evaluation/'+str(evaluationId)+'/questions/'+str(questionForm.order)+'/add_alternatives')
   if questionId:
     questionForm = QuestionForm(instance=question)
     del questionForm.fields['questionType']
@@ -138,8 +137,8 @@ def addIntegerAlternatives(request, evaluationId, questionOrder):
   if request.method == 'POST':
     form = IntegerAlternativeForm(request.POST)
     if form.is_valid():
-      question.generateIntegerAlternatives(form.cleaned_data.get('low'), form.cleaned_data.get('high'))
-      return questions(request, evaluationId)
+      question.generateIntegerAlternatives(form.cleaned_data.get('low'), form.cleaned_data.get('high')) 
+      return HttpResponseRedirect("/evaluation/"+evaluationId+"/add_question")
   else:
     form = IntegerAlternativeForm()
   template = loader.get_template('evaluation/question/addIntegerAlternatives.html')
@@ -152,8 +151,8 @@ def addStringAlternatives(request, evaluationId, questionOrder):
   if request.method == 'POST':
     form = StringAlternativeForm(request.POST)
     if form.is_valid():
-      question.generateStringAlternatives(form.cleaned_data.get('alternatives'))
-      return questions(request, evaluationId)
+      question.generateStringAlternatives(form.cleaned_data.get('alternatives'))      
+      return HttpResponseRedirect("/evaluation/"+evaluationId+"/add_question")
   else:
     form = StringAlternativeForm()
   template = loader.get_template('evaluation/question/addStringAlternatives.html')
@@ -198,10 +197,6 @@ class Menu:
       item.cssClass = "active"
     
     self._items.append(item)
-
-
-def addIntegerAlternatives(request, questionId, low, high):
-  question = Question.objects.get(pk=questionId)
   
   def getItems(self):
     return self._items

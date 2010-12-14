@@ -85,7 +85,7 @@ class IntegerAlternative(models.Model):
     
 class EvaluationForm(ModelForm):
   class Meta:
-    exclude = ('isTemplate', 'created', 'modified')
+    exclude = ('isTemplate', 'created', 'modified', 'isSent')
     model = Evaluation
 
 class QuestionForm(ModelForm):
@@ -94,8 +94,8 @@ class QuestionForm(ModelForm):
     fields = ('question', 'hasExtraTextField', 'extraTextFieldHeading', 'questionType')
     
 class IntegerAlternativeForm(forms.Form):
-  low = forms.IntegerField('Maximum')
-  high = forms.IntegerField('Minimum')
+  low = forms.IntegerField(label='från')
+  high = forms.IntegerField(label='till')
   
   def clean(self):
     cleaned_data = self.cleaned_data

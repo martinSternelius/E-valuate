@@ -5,7 +5,7 @@
   <ol id="evaluationQuestions">
     {% for evaluationQuestion in evaluation.questions %}
       <li>
-        <h2><a href="/evaluation/{{evaluation.id}}/addQuestions">{{evaluationQuestion.question}}</a></h2>
+        <h2><a href="/evaluation/{{evaluation.id}}/add_questions">{{evaluationQuestion.question}}</a></h2>
         <p>{{evaluationQuestion.questionType.name}}</p>
       </li>
     {% endfor %}
