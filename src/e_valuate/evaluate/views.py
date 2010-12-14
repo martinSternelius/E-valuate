@@ -168,7 +168,7 @@ def list(request, sent):
     evaluations = Evaluation.objects.filter(isSent=True)
     return render_to_response('evaluation/sentAll.html', {'evaluations':evaluations})
   else:
-    evaluations = Evaluation.objects.filter(isSent=False)
+    evaluations = Evaluation.objects.filter(isSent=False, isTemplate=False)
     return render_to_response('evaluation/unsentAll.html', {'evaluations':evaluations})
 
 ## Classer som hjälper templates
